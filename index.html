@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <!--
-  Dizzard. ...
+  tape 07 — south wing, storage.
+  she took it off before she knew the camera was still running.
+  don't tell dizzard we have this.
 -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -196,6 +198,31 @@
     user-select:none;
   }
 
+  .signal{
+    position:fixed;
+    top:18px; right:22px;
+    color:var(--ash);
+    font-size:18px;
+    letter-spacing:1px;
+    opacity:0.4;
+    z-index:10;
+    user-select:none;
+    cursor:pointer;
+    transition:opacity 1.2s ease;
+  }
+  .signal.playing{
+    opacity:0.22;
+    animation: signalpulse 3.2s ease-in-out infinite;
+  }
+  .signal.hidden{
+    opacity:0;
+    pointer-events:none;
+  }
+  @keyframes signalpulse{
+    0%, 100%{ opacity:0.14; }
+    50%{ opacity:0.3; }
+  }
+
   ::selection{ background:var(--rust); color:var(--ash); }
 </style>
 </head>
@@ -214,6 +241,9 @@
 <div class="corner-tl">ENT_2 · WICKED&nbsp;RATIONS</div>
 <div class="hud"><span class="dot"></span><span>REC</span></div>
 <div class="timestamp" id="clock">00:00:00</div>
+<div class="signal" id="signal">SIGNAL&nbsp;·&nbsp;click&nbsp;to&nbsp;listen</div>
+
+<audio id="tape" src="aud_1.ogg" loop preload="auto"></audio>
 
 <script>
   // grain texture via inline svg turbulence, generated once
@@ -246,6 +276,28 @@
     }
     tick();
     setInterval(tick, 1000);
+  })();
+
+  // tape loop — starts on first interaction (browsers block audio-with-sound otherwise)
+  (function(){
+    const tape = document.getElementById('tape');
+    const signal = document.getElementById('signal');
+    tape.volume = 0.55;
+    let started = false;
+
+    function start(){
+      if(started) return;
+      started = true;
+      tape.play().then(() => {
+        signal.textContent = 'SIGNAL';
+        signal.classList.add('playing');
+      }).catch(() => {
+        started = false; // playback blocked, allow retry on next click
+      });
+    }
+
+    document.addEventListener('click', start, { once:false });
+    document.addEventListener('keydown', start, { once:true });
   })();
 
   // occasional vhs tracking sweep
