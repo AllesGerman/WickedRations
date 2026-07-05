@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ARCHIVE // WICKED RATIONS</title>
+<style>
+  body {
+    background: #000;
+    color: #0f0;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 24px;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0,255,0,0.03),
+      rgba(0,255,0,0.03) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    pointer-events: none;
+  }
+  h1 {
+    font-size: 16px;
+    letter-spacing: 2px;
+    border-bottom: 1px solid #0f0;
+    padding-bottom: 12px;
+  }
+  #searchBox {
+    width: 100%;
+    max-width: 400px;
+    background: #000;
+    border: 1px solid #0f0;
+    color: #0f0;
+    font-family: inherit;
+    font-size: 15px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 16px 0;
+    outline: none;
+  }
+  .entry {
+    border: 1px solid #0a0;
+    padding: 14px;
+    margin-bottom: 12px;
+    background: rgba(0,20,0,0.35);
+  }
+  .entry-title {
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+  .entry-type {
+    font-size: 11px;
+    color: #0a0;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  audio {
+    width: 100%;
+    filter: invert(1) hue-rotate(80deg);
+  }
+  .doc-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #0f0;
+    white-space: pre-wrap;
+  }
+  .empty {
+    color: #066;
+    font-size: 13px;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+  <h1>&gt; ARCHIVE ACCESS: GRANTED</h1>
+  <input type="text" id="searchBox" placeholder="search files..." autocomplete="off" spellcheck="false">
+  <div id="results"></div>
+
+  <script>
+    // Gate check — bounce back if no valid session flag
+    if (sessionStorage.getItem('wr_access') !== 'granted') {
+      window.location.href = "access.html";
+    }
+
+    // Add new entries here as more aud_/doc_ files are released.
+    const entries = [
+      {
+        id: "aud_1",
+        title: "AUD_1",
+        type: "audio",
+        src: "aud_1.ogg",
+        note: "Recovered reversed transmission. Unknown sinner."
+      }
+      // { id: "doc_1", title: "DOC_1", type: "text", content: "..." }
+    ];
+
+    function render(list) {
+      const results = document.getElementById('results');
+      results.innerHTML = "";
+      if (list.length === 0) {
+        results.innerHTML = '<div class="empty">// no matching records found</div>';
+        return;
+      }
+      list.forEach(e => {
+        const div = document.createElement('div');
+        div.className = 'entry';
+        let inner = `<div class="entry-title">${e.id.toUpperCase()}</div>
+                      <div class="entry-type">${e.type}</div>`;
+        if (e.type === 'audio') {
+          inner += `<audio controls src="${e.src}"></audio>
+                     <div class="doc-text">${e.note || ''}</div>`;
+        } else if (e.type === 'text') {
+          inner += `<div class="doc-text">${e.content}</div>`;
+        }
+        div.innerHTML = inner;
+        results.appendChild(div);
+      });
+    }
+
+    render(entries);
+
+    document.getElementById('searchBox').addEventListener('input', function(e) {
+      const q = e.target.value.toLowerCase();
+      const filtered = entries.filter(en =>
+        en.id.toLowerCase().includes(q) ||
+        en.title.toLowerCase().includes(q) ||
+        (en.note || '').toLowerCase().includes(q)
+      );
+      render(filtered);
+    });
+  </script>
+</body>
+</html>
