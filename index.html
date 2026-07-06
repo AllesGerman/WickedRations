@@ -338,6 +338,7 @@
       msg.style.color = "#0f0";
       const soundId = 'TRUE';
       const audio = document.getElementById(soundId);
+      audio.play().catch(() => {});
       audio.currentTime = 0;
       sessionStorage.setItem('wr_access', 'granted');
       setTimeout(() => {
@@ -349,6 +350,7 @@
       const soundId = 'FALSE';
       const audio = document.getElementById(soundId);
       audio.currentTime = 0;
+      audio.play().catch(() => {});
     }
   };
   
