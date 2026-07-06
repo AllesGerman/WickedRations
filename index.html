@@ -331,14 +331,14 @@
     try { decoded = atob(input); } catch (e) { decoded = ""; }
     
     if (input === VALID_CODE_B64 || decoded === atob(VALID_CODE_B64)) {
-      msg.textContent = "ACCESS GRANTED";
+      msg.textContent = "ACCEPTABLE";
       msg.style.color = "#0f0";
       sessionStorage.setItem('wr_access', 'granted');
       setTimeout(() => {
         window.location.href = "archive.html";
       }, 600);
     } else {
-      msg.textContent = "DENIED";
+      msg.textContent = "INVALID ACCESS";
       msg.style.color = "#f00";
     }
   };
