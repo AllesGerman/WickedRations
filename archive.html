@@ -124,7 +124,8 @@
           inner += `<audio controls src="${e.src}"></audio>
                      <div class="doc-text">${e.note || ''}</div>`;
         } else if (e.type === 'text') {
-          inner += `<div class="doc-text">${e.content}</div>`;
+          inner += `<div class="doc-text">${e.note || ''}</div>
+                     <a href="${e.src}" style="display:inline-block; margin-top:8px; color:#0f0; border:1px solid #0f0; padding:6px 12px; text-decoration:none; font-size:13px; letter-spacing:1px;">OPEN FILE &rarr;</a>`;
         }
         div.innerHTML = inner;
         results.appendChild(div);
