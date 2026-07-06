@@ -252,6 +252,9 @@
 
 <!-- KEYBOARD SOUND EFFECTS -->
 <audio id="keySound1" src="key.mp3" preload="auto"></audio>
+<!-- ACCESS SOUND EFFECTS -->
+<audio id="TRUE" src="true.mp3" preload="auto"></audio>
+<audio id="FALSE" src="false.mp3" preload="auto"></audio>
 
 <script>
   // grain texture via inline svg turbulence, generated once
@@ -333,6 +336,9 @@
     if (input === VALID_CODE_B64 || decoded === atob(VALID_CODE_B64)) {
       msg.textContent = "ACCEPTABLE";
       msg.style.color = "#0f0";
+      const soundId = 'TRUE';
+      const audio = document.getElementById(soundId);
+      audio.currentTime = 0;
       sessionStorage.setItem('wr_access', 'granted');
       setTimeout(() => {
         window.location.href = "archive.html";
@@ -340,6 +346,9 @@
     } else {
       msg.textContent = "INVALID ACCESS";
       msg.style.color = "#f00";
+      const soundId = 'FALSE';
+      const audio = document.getElementById(soundId);
+      audio.currentTime = 0;
     }
   };
   
@@ -349,7 +358,7 @@
       checkAccessCode();
     } else {
       // Play random sound at random pitch
-      const soundId = sounds[Math.floor(Math.random() * sounds.length)];
+      const soundId = 'keySound1';
       const audio = document.getElementById(soundId);
       audio.currentTime = 0;
       // Random playback rate for pitch variation
