@@ -353,7 +353,7 @@
       const audio = document.getElementById(soundId);
       audio.currentTime = 0;
       // Random playback rate for pitch variation
-      audio.playbackRate = 0.8 + Math.random() * 0.4; // 0.8 to 1.2
+      audio.playbackRate = 0.1 + Math.random() * 0.4; // 0.8 to 1.2
       audio.play().catch(() => {}); // Silent fail if audio can't play
     }
   });
